@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSBOnlineStore", "CSBOnlineStore\CSBOnlineStore.csproj", "{3C63E2E9-7C7E-4D6C-B07B-92A35A3A84D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C63E2E9-7C7E-4D6C-B07B-92A35A3A84D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C63E2E9-7C7E-4D6C-B07B-92A35A3A84D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C63E2E9-7C7E-4D6C-B07B-92A35A3A84D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C63E2E9-7C7E-4D6C-B07B-92A35A3A84D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {315A54A4-88A7-4582-93B3-68F057240166}
+	EndGlobalSection
+EndGlobal
