@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CSBOnlineStore.DataBase.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,6 +28,13 @@ namespace CSBOnlineStore.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult<string> SignIn(Login login) 
+        {
+            
         }
 
         // PUT api/<UserController>/5

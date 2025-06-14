@@ -3,6 +3,7 @@ using System;
 using CSBOnlineStore.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CSBOnlineStore.Migrations
 {
     [DbContext(typeof(CSBContext))]
-    partial class CSBContextModelSnapshot : ModelSnapshot
+    [Migration("20250613195557_NewMigrateTimeStampCheck")]
+    partial class NewMigrateTimeStampCheck
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

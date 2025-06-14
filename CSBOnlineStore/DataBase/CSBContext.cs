@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSBOnlineStore.DataBase
 {
-    public class CSBContext(DbContextOptions<CSBContext> options) : DbContext(options)
+    public class CSBContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
@@ -19,6 +19,13 @@ namespace CSBOnlineStore.DataBase
         public DbSet<UnitProduct> UnitProducts { get; set; }
         public DbSet<SpetificationProduct> SpetificationProducts { get; set; }
 
+        public CSBContext(DbContextOptions<CSBContext> contextOptions) : base(contextOptions) 
+        {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+            Database.EnsureDeleted(); 
+            Database.EnsureCreated();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
