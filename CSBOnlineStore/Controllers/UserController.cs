@@ -1,15 +1,15 @@
-﻿using CSBOnlineStore.Classes;
-using CSBOnlineStore.DataBase.Models;
+﻿using CSBOnlineStore.DataBase.Models;
 using CSBOnlineStore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CSBOnlineStore.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -21,22 +21,43 @@ namespace CSBOnlineStore.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<User> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _userService.GetAllWithForeignKey();
         }
-
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public User Get(int id)
         {
-            return "value";
+            return _userService.GetById(id);
         }
 
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("{username}")]
+        public User GetByUsername(string username)
         {
+            return _userService.GetByLogin(username);
         }
+
+
+        [AllowAnonymous]
+        [Authorize]
+        [HttpGet]
+        public ActionResult<JsonDocument> GetCurrentUserInfo()
+        {
+            try
+            {
+                var httpContext = new HttpContextAccessor();
+                var accessToken = httpContext.HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+                var jsonString = JsonSerializer.Serialize(_userService.GetCurrentUserInfo(accessToken));
+                var json = JsonDocument.Parse(jsonString);
+                return json;
+            }
+            catch (AuthenticationException ex)
+            {
+                return StatusCode(401);
+            }
+        }
+
 
         [AllowAnonymous]
         [HttpPost]
@@ -54,29 +75,23 @@ namespace CSBOnlineStore.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult<JsonDocument> SignUp(User user)
+        public ActionResult SignUp(User user)
         {
             var newUser = _userService.RegisterUser(user);
             if (newUser == null)
             {
                 return Conflict("Пользователь с таким именем уже существует");
             }
-            var tokenPair = _userService.AuthenticateUser(new Login() { Username = user.Username, Password = user.Password });
-            var jsonString = JsonSerializer.Serialize(tokenPair);
-            var json = JsonDocument.Parse(jsonString);
-            return json;
+            //var tokenPair = _userService.AuthenticateUser(new Login() { Username = user.Username, Password = user.Password });
+            //var jsonString = JsonSerializer.Serialize(tokenPair);
+            //var json = JsonDocument.Parse(jsonString);
+            return Ok("Пользователь успешно зарегистрирован");
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _userService.DeleteUser(id);
         }
     }
 }

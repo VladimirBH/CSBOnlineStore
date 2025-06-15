@@ -109,18 +109,23 @@ namespace CSBOnlineStore.Services
             return tokenPair;
         }
 
-        public IIncludableQueryable<User, Role> GetAllWithForeignKey()
+        public List<User> GetAllWithForeignKey()
         {
-            return _context.Users.Include(x => x.Role);
+            return _context.Users.Include(x => x.Role).ToList();
         }
 
-
-        private User GetByLogin(string login)
+        public void DeleteUser(int id)
         {
-            return _context.Users.Include(r => r.Role).FirstOrDefault(u => (u.Username == login));
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            _context.Users.Remove(user);
         }
 
-        private User GetById(int id)
+        public User GetByLogin(string login)
+        {
+            return _context.Users.Include(r => r.Role).FirstOrDefault(u => u.Username == login);
+        }
+
+        public User GetById(int id)
         {
             return _context.Users.Include(r => r.Role).FirstOrDefault(u => (u.Id == id));
         }

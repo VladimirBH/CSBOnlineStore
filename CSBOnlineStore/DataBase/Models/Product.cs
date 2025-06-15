@@ -14,5 +14,11 @@ namespace CSBOnlineStore.DataBase.Models
 
         [Column("article")]
         public string Article { get; set; }
+
+        [Column("category_id")]
+        public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
     }
 }
