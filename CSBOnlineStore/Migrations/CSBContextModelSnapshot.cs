@@ -23,8 +23,8 @@ namespace CSBOnlineStore.Migrations
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment_type", new[] { "Card", "FPS" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "status", new[] { "Paid", "Processing", "Delivering", "Received" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment_type", new[] { "card", "fps" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "status", new[] { "paid", "processing", "delivering", "received" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CSBOnlineStore.DataBase.Models.CartProduct", b =>
@@ -36,10 +36,6 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("integer")
                         .HasColumnName("product_id");
@@ -47,10 +43,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
                         .HasColumnName("quantity");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -74,10 +66,6 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -87,10 +75,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer")
                         .HasColumnName("parent_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -112,17 +96,9 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("category_id");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("SpetificationId")
                         .HasColumnType("integer")
                         .HasColumnName("spetification_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -142,17 +118,9 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("integer")
                         .HasColumnName("product_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -181,25 +149,17 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnType("text")
                         .HasColumnName("Address");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<DateOnly>("OrderDate")
-                        .HasColumnType("date")
                         .HasColumnName("order_date");
 
                     b.Property<int>("PaymentType")
-                        .HasColumnType("integer")
+                        .HasColumnType("payment_type")
                         .HasColumnName("payment_type");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer")
+                        .HasColumnType("status")
                         .HasColumnName("status");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -221,10 +181,6 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("integer")
                         .HasColumnName("order_id");
@@ -232,10 +188,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<int>("UnitProductId")
                         .HasColumnType("integer")
                         .HasColumnName("unit_product_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -255,10 +207,6 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -268,10 +216,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer")
                         .HasColumnName("product_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -294,15 +238,6 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnType("text")
                         .HasColumnName("article");
 
-                    b.Property<string>("Attributes")
-                        .IsRequired()
-                        .HasColumnType("jsonb")
-                        .HasColumnName("attributes");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
@@ -311,10 +246,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric")
                         .HasColumnName("price");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -330,19 +261,11 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)")
                         .HasColumnName("name");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -357,10 +280,6 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
 
                     b.Property<string>("DataType")
                         .IsRequired()
@@ -380,10 +299,6 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("unit");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
-
                     b.HasKey("Id");
 
                     b.ToTable("Spetification");
@@ -398,10 +313,6 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("integer")
                         .HasColumnName("product_id");
@@ -409,10 +320,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<int>("SpetificationId")
                         .HasColumnType("integer")
                         .HasColumnName("spetification_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -438,10 +345,6 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("deleted_at");
@@ -449,10 +352,6 @@ namespace CSBOnlineStore.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer")
                         .HasColumnName("product_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -469,10 +368,6 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_at");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -501,10 +396,6 @@ namespace CSBOnlineStore.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("second_name");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_at");
 
                     b.Property<string>("Username")
                         .IsRequired()

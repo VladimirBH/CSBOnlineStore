@@ -6,15 +6,15 @@ namespace CSBOnlineStore.DataBase.Models
     public class Order : BaseEntity
     {
         [Column("order_date")]
-        public DateOnly OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
 
         [Column("Address")]
         public string Address { get; set; }
 
-        [Column("status")]
+        [Column("status", TypeName = "status")]
         public Status Status { get; set; }
 
-        [Column("payment_type")]
+        [Column("payment_type", TypeName = "payment_type")]
         public PaymentType PaymentType { get; set; }
 
         [Column("user_id")]

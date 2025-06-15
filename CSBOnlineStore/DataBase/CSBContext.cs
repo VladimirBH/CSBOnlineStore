@@ -23,14 +23,12 @@ namespace CSBOnlineStore.DataBase
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-            Database.EnsureDeleted(); 
-            Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.HasPostgresEnum("status", Enum.GetNames<Status>());
-            modelBuilder.HasPostgresEnum("payment_type", Enum.GetNames<PaymentType>());
+            modelBuilder.HasPostgresEnum<Status>();
+            modelBuilder.HasPostgresEnum<PaymentType>();
         }
     }
 }

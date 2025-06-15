@@ -30,6 +30,6 @@ namespace CSBOnlineStore.DataBase.Models
         public int RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        public virtual Role? Role { get; set; }
     }
 }

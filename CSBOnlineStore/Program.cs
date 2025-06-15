@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CSBOnlineStore.Services;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,16 +40,26 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("admin_policy", policy => policy.RequireRole("admin"));
 
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<TokenService>();
+
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRouting();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller}/{action}");
 
 app.Run();

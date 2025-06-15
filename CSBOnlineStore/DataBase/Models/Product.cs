@@ -14,9 +14,5 @@ namespace CSBOnlineStore.DataBase.Models
 
         [Column("article")]
         public string Article { get; set; }
-
-        [Column("attributes", TypeName = "jsonb")]
-        public string Attributes { get; set; }
-
     }
 }
