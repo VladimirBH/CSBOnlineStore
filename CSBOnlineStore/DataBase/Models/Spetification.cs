@@ -14,8 +14,13 @@ namespace CSBOnlineStore.DataBase.Models
         [MaxLength(10)]
         public string Unit { get; set; }
 
-        [Column("data_type")]
-        [MaxLength(20)]
-        public string DataType { get; set; }
+        [Column("data_type", TypeName = "data_type_spet")]
+        public DataTypeSpet Type { get; set; }
+
+        [Column("category_id")]
+        public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public virtual Category Category { get; set; }
     }
 }

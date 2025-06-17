@@ -13,6 +13,7 @@ namespace CSBOnlineStore.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:Enum:data_type_spet", "bool,string,number")
                 .Annotation("Npgsql:Enum:payment_type", "card,fps")
                 .Annotation("Npgsql:Enum:status", "paid,processing,delivering,received");
 
@@ -36,21 +37,6 @@ namespace CSBOnlineStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    price = table.Column<decimal>(type: "numeric", nullable: false),
-                    article = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
                 {
@@ -64,6 +50,28 @@ namespace CSBOnlineStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    price = table.Column<decimal>(type: "numeric", nullable: false),
+                    article = table.Column<string>(type: "text", nullable: false),
+                    category_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Product_Category_category_id",
+                        column: x => x.category_id,
+                        principalTable: "Category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Spetification",
                 columns: table => new
                 {
@@ -71,11 +79,42 @@ namespace CSBOnlineStore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     unit = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    data_type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false)
+                    data_type = table.Column<int>(type: "data_type_spet", nullable: false),
+                    category_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Spetification", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Spetification_Category_category_id",
+                        column: x => x.category_id,
+                        principalTable: "Category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    first_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    second_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    phone = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
+                    username = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    password = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    role_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_User_Role_role_id",
+                        column: x => x.role_id,
+                        principalTable: "Role",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,56 +153,6 @@ namespace CSBOnlineStore.Migrations
                         name: "FK_UnitProduct_Product_product_id",
                         column: x => x.product_id,
                         principalTable: "Product",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    first_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    second_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    phone = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
-                    username = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    password = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    role_id = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_User_Role_role_id",
-                        column: x => x.role_id,
-                        principalTable: "Role",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategorySpetification",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    category_id = table.Column<int>(type: "integer", nullable: false),
-                    spetification_id = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategorySpetification", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_CategorySpetification_Category_category_id",
-                        column: x => x.category_id,
-                        principalTable: "Category",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategorySpetification_Spetification_spetification_id",
-                        column: x => x.spetification_id,
-                        principalTable: "Spetification",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -313,16 +302,6 @@ namespace CSBOnlineStore.Migrations
                 column: "parent_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategorySpetification_category_id",
-                table: "CategorySpetification",
-                column: "category_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategorySpetification_spetification_id",
-                table: "CategorySpetification",
-                column: "spetification_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Favorite_product_id",
                 table: "Favorite",
                 column: "product_id");
@@ -353,6 +332,16 @@ namespace CSBOnlineStore.Migrations
                 column: "product_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Product_category_id",
+                table: "Product",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Spetification_category_id",
+                table: "Spetification",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SpetificationProduct_product_id",
                 table: "SpetificationProduct",
                 column: "product_id");
@@ -380,9 +369,6 @@ namespace CSBOnlineStore.Migrations
                 name: "CartProduct");
 
             migrationBuilder.DropTable(
-                name: "CategorySpetification");
-
-            migrationBuilder.DropTable(
                 name: "Favorite");
 
             migrationBuilder.DropTable(
@@ -393,9 +379,6 @@ namespace CSBOnlineStore.Migrations
 
             migrationBuilder.DropTable(
                 name: "SpetificationProduct");
-
-            migrationBuilder.DropTable(
-                name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Order");
@@ -414,6 +397,9 @@ namespace CSBOnlineStore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }

@@ -64,7 +64,14 @@ namespace CSBOnlineStore.Services
             if (cartProduct != null)
             {
                 cartProduct.Quantity -= cartDataModel.ProductCount;
-                _context.CartProducts.Update(cartProduct);
+                if (cartProduct.Quantity == 0)
+                {
+                    _context.CartProducts.Remove(cartProduct);
+                }
+                else 
+                {
+                    _context.CartProducts.Update(cartProduct);
+                }
                 _context.SaveChanges();
                 return;
             }

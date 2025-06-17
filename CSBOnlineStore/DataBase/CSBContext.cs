@@ -1,4 +1,5 @@
 ﻿using CSBOnlineStore.DataBase.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSBOnlineStore.DataBase
@@ -8,7 +9,6 @@ namespace CSBOnlineStore.DataBase
         public DbSet<User> Users { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<CategorySpetification> CategorySpetifications { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
@@ -29,6 +29,17 @@ namespace CSBOnlineStore.DataBase
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresEnum<Status>();
             modelBuilder.HasPostgresEnum<PaymentType>();
+            modelBuilder.HasPostgresEnum<DataTypeSpet>();
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Attributes)
+                .WithOne(pa => pa.Product)
+                .HasForeignKey(pa => pa.ProductId);
+
+            modelBuilder.Entity<SpetificationProduct>()
+                .HasOne(pa => pa.Spetification)
+                .WithMany()
+                .HasForeignKey(pa => pa.SpetificationId);
         }
     }
 }

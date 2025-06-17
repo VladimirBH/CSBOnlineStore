@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSBOnlineStore.DataBase.Models
@@ -19,6 +20,8 @@ namespace CSBOnlineStore.DataBase.Models
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
+
+        public virtual List<SpetificationProduct> Attributes { get; set; } = new();
     }
 }

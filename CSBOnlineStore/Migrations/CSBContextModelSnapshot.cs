@@ -23,6 +23,7 @@ namespace CSBOnlineStore.Migrations
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "data_type_spet", new[] { "bool", "string", "number" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment_type", new[] { "card", "fps" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "status", new[] { "paid", "processing", "delivering", "received" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -81,32 +82,6 @@ namespace CSBOnlineStore.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("CSBOnlineStore.DataBase.Models.CategorySpetification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer")
-                        .HasColumnName("category_id");
-
-                    b.Property<int>("SpetificationId")
-                        .HasColumnType("integer")
-                        .HasColumnName("spetification_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("SpetificationId");
-
-                    b.ToTable("CategorySpetification");
                 });
 
             modelBuilder.Entity("CSBOnlineStore.DataBase.Models.Favorite", b =>
@@ -238,6 +213,10 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnType("text")
                         .HasColumnName("article");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
@@ -248,6 +227,8 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnName("price");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
                 });
@@ -281,17 +262,19 @@ namespace CSBOnlineStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DataType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("data_type");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("data_type_spet")
+                        .HasColumnName("data_type");
 
                     b.Property<string>("Unit")
                         .IsRequired()
@@ -300,6 +283,8 @@ namespace CSBOnlineStore.Migrations
                         .HasColumnName("unit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Spetification");
                 });
@@ -438,25 +423,6 @@ namespace CSBOnlineStore.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("CSBOnlineStore.DataBase.Models.CategorySpetification", b =>
-                {
-                    b.HasOne("CSBOnlineStore.DataBase.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CSBOnlineStore.DataBase.Models.Spetification", "Spetification")
-                        .WithMany()
-                        .HasForeignKey("SpetificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Spetification");
-                });
-
             modelBuilder.Entity("CSBOnlineStore.DataBase.Models.Favorite", b =>
                 {
                     b.HasOne("CSBOnlineStore.DataBase.Models.Product", "Product")
@@ -515,6 +481,28 @@ namespace CSBOnlineStore.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("CSBOnlineStore.DataBase.Models.Product", b =>
+                {
+                    b.HasOne("CSBOnlineStore.DataBase.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CSBOnlineStore.DataBase.Models.Spetification", b =>
+                {
+                    b.HasOne("CSBOnlineStore.DataBase.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("CSBOnlineStore.DataBase.Models.SpetificationProduct", b =>
