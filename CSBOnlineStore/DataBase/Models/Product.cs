@@ -22,6 +22,8 @@ namespace CSBOnlineStore.DataBase.Models
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
-        public virtual List<SpetificationProduct> Attributes { get; set; } = new();
+        public virtual List<SpetificationProduct> ProductSpetifications { get; set; } = new();
+
+        public virtual List<Photo> Photos { get; set; } = new();
     }
 }

@@ -22,5 +22,7 @@ namespace CSBOnlineStore.DataBase.Models
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
+
+        public virtual List<OrderProduct> OrderProducts { get; set; }
     }
 }

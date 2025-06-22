@@ -1,8 +1,6 @@
 ﻿using CSBOnlineStore.Classes;
 using CSBOnlineStore.DataBase;
 using CSBOnlineStore.DataBase.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace CSBOnlineStore.Services
 {
@@ -21,9 +19,23 @@ namespace CSBOnlineStore.Services
             return _context.Products.FirstOrDefault(p => p.Id == id);
         }
 
-        public Product GetProductByArticle(string article)
+        public List<Product> GetAllProducts()
         {
-            return _context.Products.FirstOrDefault(p => p.Article == article);
+            return _context.Products.ToList();
+        }
+
+        public ProductFull GetFullProductInfo(int id) 
+        {
+            var product = GetProductById(id);
+            ProductFull productFull = new()
+            {
+                Product = product,
+                Spetifications = _context.SpetificationProducts
+                    .Where(p => p.ProductId == product.Id)
+                    .Select(sp => sp.Spetification)
+                    .ToList()
+            };
+            return productFull;
         }
 
         public List<Product> GetProducts() 
@@ -37,7 +49,7 @@ namespace CSBOnlineStore.Services
             return _context.Products.Where(p => p.CategoryId == category.Id).ToList();
         }
 
-        public List<Product> GetProductsByFilter(ProductFilterDto dto)
+        public List<Product> GetProductsByFilter(ProductFilter dto)
         {
             var query = from product in _context.Products
                         join productSpet in _context.SpetificationProducts on product.Id equals productSpet.ProductId
@@ -80,7 +92,7 @@ namespace CSBOnlineStore.Services
 
         public List<Product> GetProductsBySearch(string parameter) 
         {
-            return _context.Products.Where(p => p.Name.ToLower().Contains(parameter) || p.Article.Contains(parameter)).ToList();
+            return _context.Products.Where(p => p.Name.ToLower().Contains(parameter.ToLower()) || p.Article.Contains(parameter.ToLower())).ToList();
         }
 
         public void Add(Product product) 
@@ -101,7 +113,6 @@ namespace CSBOnlineStore.Services
             }
             
         }
-
         public void Update(Product product)
         {
             _context.Products.Update(product);

@@ -41,6 +41,10 @@ builder.Services.AddAuthorizationBuilder()
 
 builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<TokenService>();
+builder.Services.AddTransient<CartService>();
+builder.Services.AddTransient<FavoriteService>();
+builder.Services.AddTransient<ProductService>();
+builder.Services.AddTransient<OrderService>();
 
 builder.Services.AddOpenApi();
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using CSBOnlineStore.Classes;
+using CSBOnlineStore.DataBase.Models;
+using CSBOnlineStore.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace CSBOnlineStore.Controllers
 {
@@ -8,36 +10,36 @@ namespace CSBOnlineStore.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        // GET: api/<ProductController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ProductService _productService;
+
+        public ProductController(ProductService productService)
         {
-            return new string[] { "value1", "value2" };
+            _productService = productService;
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ProductFull GetProductInfo(int id)
         {
-            return "value";
+            return _productService.GetFullProductInfo(id);
         }
 
-        // POST api/<ProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        public List<Product> Get()
         {
+            return _productService.GetAllProducts();
         }
 
-        // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet]
+        public List<Product> GetFilteredProducts(ProductFilter productFilter)
         {
+            return _productService.GetProductsByFilter(productFilter);
         }
 
-        // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpGet]
+        public List<Product> SearchProducts(string parameter) 
         {
+            return _productService.GetProductsBySearch(parameter);
         }
     }
 }

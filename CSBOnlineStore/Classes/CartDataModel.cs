@@ -1,11 +1,9 @@
-﻿using CSBOnlineStore.DataBase.Models;
-
-namespace CSBOnlineStore.Classes
+﻿namespace CSBOnlineStore.Classes
 {
     public class CartDataModel
     {
-        public User User;
-        public Product Product;
+        public int UserId;
+        public int ProductId;
         public int ProductCount;
     }
 }

@@ -38,5 +38,16 @@ namespace CSBOnlineStore.Services
             _context.Favorites.Remove(favorite);
             _context.SaveChanges();
         }
+
+        public List<Product> GetFavoritesProductsFromUserId(int userId)
+        {
+            var products = from product in _context.Products
+                           join favorite in _context.Favorites on product.Id equals favorite.UserId
+                           join user in _context.Users on favorite.UserId equals user.Id
+                           where user.Id == userId
+                           select product;
+
+            return products.ToList();
+        }
     }
 }

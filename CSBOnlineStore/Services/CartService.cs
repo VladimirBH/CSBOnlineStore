@@ -17,8 +17,8 @@ namespace CSBOnlineStore.Services
         public void AddProductToCart(CartDataModel cartDataModel) 
         {
             var cartProduct = _context.CartProducts.FirstOrDefault(
-                cp => cp.ProductId == cartDataModel.Product.Id && 
-                cp.UserId == cartDataModel.User.Id);
+                cp => cp.ProductId == cartDataModel.ProductId && 
+                cp.UserId == cartDataModel.UserId);
 
             if (cartProduct != null)
             {
@@ -29,8 +29,8 @@ namespace CSBOnlineStore.Services
             }
             var newCartProduct = new CartProduct()
             {
-                ProductId = cartDataModel.Product.Id,
-                UserId = cartDataModel.User.Id,
+                ProductId = cartDataModel.ProductId,
+                UserId = cartDataModel.UserId,
                 Quantity = cartDataModel.ProductCount
             };
             _context.CartProducts.Add(newCartProduct);
@@ -40,8 +40,8 @@ namespace CSBOnlineStore.Services
         public void RemoveProductFromCart(CartDataModel cartDataModel)
         {
             var cartProduct = _context.CartProducts.FirstOrDefault(
-                cp => cp.ProductId == cartDataModel.Product.Id &&
-                cp.UserId == cartDataModel.User.Id);
+                cp => cp.ProductId == cartDataModel.ProductId &&
+                cp.UserId == cartDataModel.UserId);
 
             if (cartProduct != null)
             {
@@ -58,8 +58,8 @@ namespace CSBOnlineStore.Services
         public void SubtractProductFromCart(CartDataModel cartDataModel)
         {
             var cartProduct = _context.CartProducts.FirstOrDefault(
-                cp => cp.ProductId == cartDataModel.Product.Id &&
-                cp.UserId == cartDataModel.User.Id);
+                cp => cp.ProductId == cartDataModel.ProductId &&
+                cp.UserId == cartDataModel.UserId);
 
             if (cartProduct != null)
             {

@@ -27,19 +27,31 @@ namespace CSBOnlineStore.DataBase
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasPostgresEnum<Status>();
             modelBuilder.HasPostgresEnum<PaymentType>();
             modelBuilder.HasPostgresEnum<DataTypeSpet>();
 
             modelBuilder.Entity<Product>()
-                .HasMany(p => p.Attributes)
+                .HasMany(p => p.ProductSpetifications)
                 .WithOne(pa => pa.Product)
                 .HasForeignKey(pa => pa.ProductId);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Photos)
+                .WithOne(ph => ph.Product)
+                .HasForeignKey(ph => ph.ProductId);
 
             modelBuilder.Entity<SpetificationProduct>()
                 .HasOne(pa => pa.Spetification)
                 .WithMany()
                 .HasForeignKey(pa => pa.SpetificationId);
+
+            modelBuilder.Entity<Order>()
+                .HasMany(p => p.OrderProducts)
+                .WithOne(op => op.Order)
+                .HasForeignKey(op => op.OrderId);
+
         }
     }
 }
